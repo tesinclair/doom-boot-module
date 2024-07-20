@@ -10,10 +10,13 @@ A Doom clone written as a kernel module which hooks and hijacks the login, forci
 ### Future
 This will be constantly updated as this project is now in **Active Development**.
 
-**Step 1:** Creating doom.
+**Step 1:** Creating doom.  
+
 **Description:**
   - A doom game, that is rendered directly through the frame buffer `/dev/fb0`
-**Acceptence Crit:**
+
+**Acceptence Crit:**  
+
 The game should:
   - be in 3D
   - have three distinct rooms
