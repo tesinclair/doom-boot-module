@@ -7,10 +7,7 @@
 #include <sys/mman.h>
 #include <fcntl.h>
 
-// Screen Info
-#define SCREEN_HEIGHT 2160
-#define SCREEN_WIDTH 3200
-#define PIXEL_DEPTH 4
+#include "lib/draw.h"
 
 #define FB_PATH "/dev/fb0"
 
@@ -24,5 +21,28 @@ enum {
     SHUTDOWN_FAILED,
     NO_MEMORY,
 };
+
+struct game_state{
+    int is_active;
+};
+
+int
+setup(void *fb_mmap, int *fb0_fd, void *double_buf);
+
+int
+shutdown(void *fb0_mmap, int fb0_fd, void *double_buf);
+
+void
+exit_success(void *fb0_mmap, int fb0_fd, void *double_buf);
+
+void
+exit_failure(
+        void *fb0_mmap,
+        int fb0_fd,
+        void *double_buf,
+        itn errCode,
+        char *format,
+        ...
+        );
 
 #endif // _DOOM_APP_H

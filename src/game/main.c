@@ -97,6 +97,8 @@ main(){
     void *fb0_mmap;
     void *double_buf;
 
+    struct game_state state;
+
     if (setup(fb0_mmap, &fb0_fd, double_buf) < 0){
         exit_failure(
                 fb0_mmap,
@@ -107,7 +109,14 @@ main(){
                 );
     }
 
-    
+    state.is_active = TRUE;
+
+    // Game loop:
+    while (state.is_active){
+         
+        render(fb0_mmap, double_buf);
+            
+    }
 
     if (shutdown(fb0_mmap, fb0_fd, double_buf) < 0){
         exit_failure(
