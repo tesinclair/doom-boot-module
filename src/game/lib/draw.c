@@ -31,12 +31,13 @@ int
 draw_line_x(void *double_buf, size_t x, size_t y, size_t len, size_t color){
     // validate
     if (    x < 1 
-            | y < 1
-            | len < 1
-            | x > SCREEN_WIDTH
-            | y > SCREEN_HEIGHT
-            | (x + len) > SCREEN_WIDTH
-            | double_buf == NULL
+            || y < 1
+            || len < 1
+            || x > SCREEN_WIDTH
+            || y > SCREEN_HEIGHT
+            || (x + len) > SCREEN_WIDTH
+            || double_buf == NULL
+            || color > WHITE
        ){
         errno = EINVAL;
         return -1;
@@ -46,14 +47,12 @@ draw_line_x(void *double_buf, size_t x, size_t y, size_t len, size_t color){
             size_t i = convert_coord_to_index(x, y); 
             i < convert_coord_to_index(x + len, y); 
             i += PIXEL_DEPTH){
-        if (memcpy(
-                    double_buf + i, // base addr + index
-                    (void *) color,
-                    PIXEL_DEPTH
-                  ) < 0){
-            perror("Failed to memcpy line\n");
-            return -1;
-        }
+        memcpy(
+            &((char *)double_buf)[SCREEN_WIDTH * SCREEN_HEIGHT], // base addr index
+            &color,
+            PIXEL_DEPTH
+        );
+        printf("here\n");
     }
 
     return 0;
@@ -79,13 +78,14 @@ draw_line_y(void *double_buf, size_t x, size_t y, size_t len, size_t color){
             i < convert_coord_to_index(x, y + len); 
             i += SCREEN_WIDTH){
         if (memcpy(
-                    double_buf + i, // base addr + index
-                    (void *) color,
+                    &((char *)double_buf)[i], // base addr + index
+                    &color,
                     PIXEL_DEPTH
                   ) < 0){
             perror("Failed to memcpy line\n");
             return -1;
         }
+        printf("here \n");
     }
 
     return 0;

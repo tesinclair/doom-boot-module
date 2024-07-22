@@ -5,9 +5,15 @@
 #define SCREEN_WIDTH (size_t) 3200
 #define PIXEL_DEPTH (size_t) 4
 
+
+#define WHITE (size_t) 0xFFFFFFFF
+#define BLACK (size_t) 0x000000FF
+
 #include <sys/mman.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <stdio.h>
+#include <string.h>
 
 /// @param fb0_mmap - the base address of the
 ///                   memory map to write to
@@ -31,7 +37,7 @@ render(void *fb0_mmap, void *double_buf);
 ///            onto double_buf of length len,
 ///            starting at (x, y)
 int 
-draw_line_x(void *double_buf, size_t x, size_t y, size_t len);
+draw_line_x(void *double_buf, size_t x, size_t y, size_t len, size_t color);
 
 /// @param double_buf - The buffer to draw to
 /// @param x - the start x coord
@@ -43,6 +49,6 @@ draw_line_x(void *double_buf, size_t x, size_t y, size_t len);
 ///            onto double_buf of length len,
 ///            starting at (x, y)
 int 
-draw_line_y(void *double_buf, size_t x, size_t y, size_t len);
+draw_line_y(void *double_buf, size_t x, size_t y, size_t len, size_t color);
 
 #endif // _DOOM_LIBDRAW_H

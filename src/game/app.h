@@ -6,6 +6,7 @@
 #include <stdarg.h>
 #include <sys/mman.h>
 #include <fcntl.h>
+#include <string.h>
 
 #include "lib/draw.h"
 
@@ -14,6 +15,8 @@
 // Standard stuff
 #define TRUE 1
 #define FALSE 0
+
+#define ALIGNMENT (size_t) 128
 
 // Errors
 enum {
@@ -40,7 +43,7 @@ exit_failure(
         void *fb0_mmap,
         int fb0_fd,
         void *double_buf,
-        itn errCode,
+        int errCode,
         char *format,
         ...
         );
