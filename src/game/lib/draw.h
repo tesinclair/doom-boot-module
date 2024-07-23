@@ -1,9 +1,13 @@
 #ifndef _DOOM_LIBDRAW_H
 #define _DOOM_LIBDRAW_H
 
-#define SCREEN_HEIGHT (size_t) 2160
+#define SCREEN_HEIGHT (size_t) 1995
 #define SCREEN_WIDTH (size_t) 3200
 #define PIXEL_DEPTH (size_t) 4
+
+#define SCREEN_SIZE SCREEN_HEIGHT * \
+    SCREEN_WIDTH * \
+    PIXEL_DEPTH
 
 
 #define WHITE (size_t) 0xFFFFFFFF

@@ -5,8 +5,14 @@
 size_t 
 convert_coord_to_index(size_t x, size_t y);
 
+/// @PRIVATE ///
+/// @err: -1 if msync fails
+int
+draw(void *double_buf);
+
 int
 render(void *fb0_mmap, void *double_buf){
+    printf("here\n");
     if (memcpy(
                 fb0_mmap, 
                 double_buf, 
@@ -48,11 +54,15 @@ draw_line_x(void *double_buf, size_t x, size_t y, size_t len, size_t color){
             i < convert_coord_to_index(x + len, y); 
             i += PIXEL_DEPTH){
         memcpy(
-            &((char *)double_buf)[SCREEN_WIDTH * SCREEN_HEIGHT], // base addr index
+            &((char *)double_buf)[i], // base addr index
             &color,
             PIXEL_DEPTH
         );
-        printf("here\n");
+    }
+
+    if (draw(double_buf) < 0){
+        perror("Failed to draw\n");
+        return -1;
     }
 
     return 0;
@@ -62,12 +72,13 @@ int
 draw_line_y(void *double_buf, size_t x, size_t y, size_t len, size_t color){
     // validate
     if (    x < 1 
-            | y < 1
-            | len < 1
-            | x > SCREEN_WIDTH
-            | y > SCREEN_HEIGHT
-            | (x + len) > SCREEN_WIDTH
-            | double_buf == NULL
+            || y < 1
+            || len < 1
+            || x > SCREEN_WIDTH
+            || y > SCREEN_HEIGHT
+            || (x + len) > SCREEN_WIDTH
+            || double_buf == NULL
+            || color > WHITE
        ){
         errno = EINVAL;
         return -1;
@@ -77,17 +88,27 @@ draw_line_y(void *double_buf, size_t x, size_t y, size_t len, size_t color){
             size_t i = convert_coord_to_index(x, y); 
             i < convert_coord_to_index(x, y + len); 
             i += SCREEN_WIDTH){
-        if (memcpy(
-                    &((char *)double_buf)[i], // base addr + index
-                    &color,
-                    PIXEL_DEPTH
-                  ) < 0){
-            perror("Failed to memcpy line\n");
-            return -1;
-        }
-        printf("here \n");
+        memcpy(
+                &((char *)double_buf)[i], // base addr + index
+                &color,
+                PIXEL_DEPTH
+                );
     }
 
+    if (draw(double_buf) < 0){
+        perror("Failed to draw\n");
+        return -1;
+    }
+
+    return 0;
+}
+
+int 
+draw(void *double_buf){
+    if (msync(double_buf, SCREEN_SIZE, MS_ASYNC) < 0){
+        perror("Failed to Sync double_buf\n");
+        return -1;
+    }
     return 0;
 }
     

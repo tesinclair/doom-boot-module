@@ -16,8 +16,6 @@
 #define TRUE 1
 #define FALSE 0
 
-#define ALIGNMENT (size_t) 128
-
 // Errors
 enum {
     SETUP_FAILED = 10,
@@ -30,7 +28,7 @@ struct game_state{
 };
 
 int
-setup(void *fb_mmap, int *fb0_fd, void *double_buf);
+setup(void **fb_mmap, int *fb0_fd, void **double_buf);
 
 int
 shutdown(void *fb0_mmap, int fb0_fd, void *double_buf);
