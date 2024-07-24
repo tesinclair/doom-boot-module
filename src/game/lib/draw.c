@@ -12,21 +12,20 @@ draw(void *double_buf);
 
 int
 render(void *fb0_mmap, void *double_buf){
-    printf("here\n");
     if (memcpy(
                 fb0_mmap, 
                 double_buf, 
-                (size_t)strlen((char *)double_buf)) 
-            < 0){
+                SCREEN_SIZE
+            ) < 0){
         perror("Memcpy failed writing to fb0 mmap\n");
         return -1;
     }
 
     if (msync(
                 fb0_mmap, 
-                (size_t)strlen((char *)fb0_mmap), 
-                MS_ASYNC) 
-            < 0){
+                SCREEN_SIZE,
+                MS_ASYNC
+            ) < 0){
         perror("Failed to schedule memory sync\n");
         return -1;
     }
@@ -34,7 +33,7 @@ render(void *fb0_mmap, void *double_buf){
 }
 
 int 
-draw_line_x(void *double_buf, size_t x, size_t y, size_t len, size_t color){
+draw_line_x(char *double_buf, size_t x, size_t y, size_t len, size_t color){
     // validate
     if (    x < 1 
             || y < 1
@@ -54,7 +53,7 @@ draw_line_x(void *double_buf, size_t x, size_t y, size_t len, size_t color){
             i < convert_coord_to_index(x + len, y); 
             i += PIXEL_DEPTH){
         memcpy(
-            &((char *)double_buf)[i], // base addr index
+            &double_buf[i], // base addr index
             &color,
             PIXEL_DEPTH
         );
@@ -69,7 +68,7 @@ draw_line_x(void *double_buf, size_t x, size_t y, size_t len, size_t color){
 }
 
 int 
-draw_line_y(void *double_buf, size_t x, size_t y, size_t len, size_t color){
+draw_line_y(char *double_buf, size_t x, size_t y, size_t len, size_t color){
     // validate
     if (    x < 1 
             || y < 1
@@ -89,10 +88,32 @@ draw_line_y(void *double_buf, size_t x, size_t y, size_t len, size_t color){
             i < convert_coord_to_index(x, y + len); 
             i += SCREEN_WIDTH){
         memcpy(
-                &((char *)double_buf)[i], // base addr + index
+                &double_buf[i], // base addr + index
                 &color,
                 PIXEL_DEPTH
                 );
+    }
+
+    if (draw(double_buf) < 0){
+        perror("Failed to draw\n");
+        return -1;
+    }
+
+    return 0;
+}
+
+int 
+clear_screen(char *double_buf){
+    size_t color = BLACK;
+    for (
+            size_t i = 0;
+            i < convert_coord_to_index(SCREEN_WIDTH, SCREEN_HEIGHT - 1);
+            i += PIXEL_DEPTH){
+        memcpy(
+                &double_buf[i],
+                &color,
+                PIXEL_DEPTH
+              );
     }
 
     if (draw(double_buf) < 0){

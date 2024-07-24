@@ -9,9 +9,8 @@
     SCREEN_WIDTH * \
     PIXEL_DEPTH
 
-
 #define WHITE (size_t) 0xFFFFFFFF
-#define BLACK (size_t) 0x000000FF
+#define BLACK (size_t) 0xFF000000
 
 #include <sys/mman.h>
 #include <stdlib.h>
@@ -41,7 +40,7 @@ render(void *fb0_mmap, void *double_buf);
 ///            onto double_buf of length len,
 ///            starting at (x, y)
 int 
-draw_line_x(void *double_buf, size_t x, size_t y, size_t len, size_t color);
+draw_line_x(char *double_buf, size_t x, size_t y, size_t len, size_t color);
 
 /// @param double_buf - The buffer to draw to
 /// @param x - the start x coord
@@ -53,6 +52,13 @@ draw_line_x(void *double_buf, size_t x, size_t y, size_t len, size_t color);
 ///            onto double_buf of length len,
 ///            starting at (x, y)
 int 
-draw_line_y(void *double_buf, size_t x, size_t y, size_t len, size_t color);
+draw_line_y(char *double_buf, size_t x, size_t y, size_t len, size_t color);
+
+
+/// @param double_buf - The buffer to clear
+/// @return int, error status (0/-1)
+/// @summary - draw black to every pixel on buf
+int
+clear_screen(char *double_buf);
 
 #endif // _DOOM_LIBDRAW_H

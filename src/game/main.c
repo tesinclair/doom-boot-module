@@ -125,6 +125,7 @@ main(){
 
     // Game loop:
     while (state.is_active){
+        clear_screen(double_buf);
         draw_line_x(double_buf, 1000, 1000, 100, 0xFFFFFFFF);                 
         draw_line_y(double_buf, 1000, 1000, 100, 0xFFFFFFFF);
         draw_line_x(double_buf, 1000, 1100, 100, 0xFFFFFFFF);
