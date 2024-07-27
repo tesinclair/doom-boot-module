@@ -8,7 +8,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-#include "lib/draw.h"
+#include "lib/scenes.h"
 
 #define FB_PATH "/dev/fb0"
 

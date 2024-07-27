@@ -11,6 +11,7 @@
 
 #define WHITE (size_t) 0xFFFFFFFF
 #define BLACK (size_t) 0xFF000000
+#define BLUE (size_t) 0xFF0000FF
 
 #include <sys/mman.h>
 #include <stdlib.h>

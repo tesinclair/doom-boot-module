@@ -86,7 +86,7 @@ draw_line_y(char *double_buf, size_t x, size_t y, size_t len, size_t color){
     for (
             size_t i = convert_coord_to_index(x, y); 
             i < convert_coord_to_index(x, y + len); 
-            i += SCREEN_WIDTH){
+            i += SCREEN_WIDTH * PIXEL_DEPTH){
         memcpy(
                 &double_buf[i], // base addr + index
                 &color,
