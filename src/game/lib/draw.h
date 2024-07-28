@@ -3,6 +3,7 @@
 
 #define SCREEN_HEIGHT (size_t) 1995
 #define SCREEN_WIDTH (size_t) 3200
+#define MAX_Z (size_t) 5000
 #define PIXEL_DEPTH (size_t) 4
 
 #define SCREEN_SIZE SCREEN_HEIGHT * \

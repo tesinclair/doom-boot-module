@@ -9,8 +9,21 @@ draw_mesh_box(
         size_t height,
         size_t width,
         size_t depth,
-        size_t color
+        size_t color,
+        size_t fill
         ){
+    // validate
+    if (x < 1
+        || (x + width) > SCREEN_WIDTH
+        || y < 1
+        || (y + height) > SCREEN_HEIGHT
+        || z < 1
+        || (z + depth) > MAX_Z
+        || color > WHITE
+       ){
+        errno = EINVAL;
+        return -1;
+    }
     return -1;
 }
 
@@ -23,8 +36,21 @@ draw_mesh_bubble(
         size_t radius_x,
         size_t radius_y,
         size_t radius_z,
-        size_t color
+        size_t color,
+        size_t fill
         ){
+    // validate
+    if (x < 1
+        || (x + radius_x) > SCREEN_WIDTH
+        || y < 1
+        || (y + radius_y) > SCREEN_HEIGHT
+        || z < 1
+        || (z + radius_z) > MAX_Z
+        || color > WHITE
+       ){
+        errno = EINVAL;
+        return -1;
+    }
     return -1;
 }
 

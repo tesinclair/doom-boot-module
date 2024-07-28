@@ -36,11 +36,10 @@ int
 draw_line_x(char *double_buf, size_t x, size_t y, size_t len, size_t color){
     // validate
     if (    x < 1 
-            || y < 1
-            || len < 1
-            || x > SCREEN_WIDTH
-            || y > SCREEN_HEIGHT
             || (x + len) > SCREEN_WIDTH
+            || y < 1
+            || y > SCREEN_HEIGHT
+            || len < 1
             || double_buf == NULL
             || color > WHITE
        ){
