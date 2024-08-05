@@ -19,6 +19,18 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
+
+typedef struct{
+    size_t x;
+    size_t y;
+    size_t z;
+} vector_3;
+
+typedef struct{
+    size_t x;
+    size_t y;
+} vector_2;
 
 /// @param fb0_mmap - the base address of the
 ///                   memory map to write to
@@ -56,6 +68,16 @@ draw_line_x(char *double_buf, size_t x, size_t y, size_t len, size_t color);
 int 
 draw_line_y(char *double_buf, size_t x, size_t y, size_t len, size_t color);
 
+/// @param double_buf - The buffer to draw to
+/// @param x - the start x coord
+/// @param y - the start y coord
+/// @param len - the number of pixels to draw
+/// @param angle - the angle from north in degrees that the vector should have 
+/// @param color - the color (rgba) to draw; must be dword (4bytes)
+/// @return int, error status (0/-1)
+/// @summary - draws a straight line in 2d space of angle theta from north
+int
+draw_line_angle(char *double_buf, size_t x, size_t y, size_t len, size_t angle, size_t color);
 
 /// @param double_buf - The buffer to clear
 /// @return int, error status (0/-1)

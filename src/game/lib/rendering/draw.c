@@ -32,6 +32,67 @@ render(void *fb0_mmap, void *double_buf){
     return 0;
 }
 
+int
+draw_line_angle(char *double_buf, size_t x, size_t y, size_t len, size_t angle, size_t color){
+    if (    x < 1
+            || (x + len) > SCREEN_WIDTH
+            || y < 1
+            || y > SCREEN_HEIGHT
+            || angle > 360
+            || color > WHITE
+       ){
+        errno = EINVAL;
+        return -1;
+    }
+    /// TODO: try and make faster
+    for (size_t i = y; i < (len + y); i++){
+        // rotating from vertical line of length y
+        rotated_y = sin(angle) * x + cos(angle) * i;
+        rotated_x = cos(angle) * x + sin(angle) * i;
+        
+        pos = convert_coord_to_index(rotated_x, rotated_y);
+
+        memcpy(
+            &double_buf[i],
+            &color,
+            PIXEL_DEPTH
+            );
+    }
+
+    if (draw(double_buf) < 0){
+        perror("Failed to draw\n");
+        return -1;
+    }
+
+    return 0;
+}
+
+int 
+draw_line_y(char *double_buf, size_t x, size_t y, size_t len, size_t color){
+    // validate
+    if (    x < 1 
+            || y < 1
+            || len < 1
+            || x > SCREEN_WIDTH
+            || y > SCREEN_HEIGHT
+            || (x + len) > SCREEN_WIDTH
+            || double_buf == NULL
+            || color > WHITE
+       ){
+        errno = EINVAL;
+        return -1;
+    }
+    
+    for (
+            size_t i = convert_coord_to_index(x, y); 
+            i < convert_coord_to_index(x, y + len); 
+            i += SCREEN_WIDTH * PIXEL_DEPTH){
+        memcpy(
+                &double_buf[i], // base addr + index
+                &color,
+
+}
+
 int 
 draw_line_x(char *double_buf, size_t x, size_t y, size_t len, size_t color){
     // validate
